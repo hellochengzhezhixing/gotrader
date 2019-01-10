@@ -1,0 +1,41 @@
+D:\>mvn archetype:generate -DgroupId=com.mkyong.web -DartifactId=java-web-project -DarchetypeArtifactId=maven-archetype-webapp -DinteractiveMode=false
+
+[INFO] Scanning for projects...
+[INFO]
+[INFO] ------------------< org.apache.maven:standalone-pom >-------------------
+[INFO] Building Maven Stub Project (No POM) 1
+[INFO] --------------------------------[ pom ]---------------------------------
+[INFO]
+[INFO] >>> maven-archetype-plugin:3.0.1:generate (default-cli) > generate-sources @ standalone-pom >>>
+[INFO]
+[INFO] <<< maven-archetype-plugin:3.0.1:generate (default-cli) < generate-sources @ standalone-pom <<<
+[INFO]
+[INFO]
+[INFO] --- maven-archetype-plugin:3.0.1:generate (default-cli) @ standalone-pom ---
+[INFO] Generating project in Batch mode
+[INFO] ----------------------------------------------------------------------------
+[INFO] Using following parameters for creating project from Old (1.x) Archetype: maven-archetype-webapp:1.0
+[INFO] ----------------------------------------------------------------------------
+[INFO] Parameter: basedir, Value: D:\
+[INFO] Parameter: package, Value: com.mkyong.web
+[INFO] Parameter: groupId, Value: com.mkyong.web
+[INFO] Parameter: artifactId, Value: java-web-project
+[INFO] Parameter: packageName, Value: com.mkyong.web
+[INFO] Parameter: version, Value: 1.0-SNAPSHOT
+[INFO] project created from Old (1.x) Archetype in dir: D:\java-web-project
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 6.509 s
+[INFO] Finished at: 2018-10-04T15:25:16+08:00
+[INFO] ------------------------------------------------------------------------
+
+
+
+
+
+mvn install:install-file -Dfile=json.jar -DgroupId=org.json -DartifactId=json -Dversion=1.2.3 -Dpackaging=jar
+
+
+
+{"id": 1,"command": "tx","transaction": "DEA2235C3BD560E8B9B2A681A5D4DA6E4A3B74E4BDAE867051D348470879B508","binary": false}

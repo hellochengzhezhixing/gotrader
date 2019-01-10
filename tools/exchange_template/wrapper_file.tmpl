@@ -1,0 +1,178 @@
+{{define "wrapper"}}
+package {{.Name}}
+
+import (
+	"errors"
+	"log"
+	"sync"
+
+{{if .WS}} "github.com/thrasher-/gocryptotrader/common" {{end}}
+	"github.com/thrasher-/gocryptotrader/currency/pair"
+	"github.com/thrasher-/gocryptotrader/exchanges"
+	"github.com/thrasher-/gocryptotrader/exchanges/orderbook"
+	"github.com/thrasher-/gocryptotrader/exchanges/ticker"
+)
+
+// Start starts the {{.CapitalName}} go routine
+func ({{.Variable}} *{{.CapitalName}}) Start(wg *sync.WaitGroup) {
+	wg.Add(1)
+	go func() {
+		{{.Variable}}.Run()
+		wg.Done()
+	}()
+}
+
+// Run implements the {{.CapitalName}} wrapper
+func ({{.Variable}} *{{.CapitalName}}) Run() {
+	if {{.Variable}}.Verbose {
+{{if .WS}} log.Printf("%s Websocket: %s. (url: %s).\n", {{.Variable}}.GetName(), common.IsEnabled({{.Variable}}.Websocket.IsEnabled()), {{.Variable}}.Websocket.GetWebsocketURL()) {{end}}
+		log.Printf("%s polling delay: %ds.\n", {{.Variable}}.GetName(), {{.Variable}}.RESTPollingDelay)
+		log.Printf("%s %d currencies enabled: %s.\n", {{.Variable}}.GetName(), len({{.Variable}}.EnabledPairs), {{.Variable}}.EnabledPairs)
+	}
+}
+
+// UpdateTicker updates and returns the ticker for a currency pair
+func ({{.Variable}} *{{.CapitalName}}) UpdateTicker(p pair.CurrencyPair, assetType string) (ticker.Price, error) {
+	var tickerPrice ticker.Price
+  // NOTE EXAMPLE FOR GETTING TICKER PRICE
+	//tick, err := {{.Variable}}.GetTickers()
+	//if err != nil {
+	//	return tickerPrice, err
+	//}
+
+	//for _, x := range {{.Variable}}.GetEnabledCurrencies() {
+		//curr := exchange.FormatExchangeCurrency({{.Variable}}.Name, x)
+		//for y := range tick {
+		//	if tick[y].Symbol == curr.String() {
+		//		tickerPrice.Pair = x
+		//		tickerPrice.Ask = tick[y].AskPrice
+		//		tickerPrice.Bid = tick[y].BidPrice
+		//		tickerPrice.High = tick[y].HighPrice
+		//		tickerPrice.Last = tick[y].LastPrice
+		//		tickerPrice.Low = tick[y].LowPrice
+		//		tickerPrice.Volume = tick[y].Volume
+		//		ticker.ProcessTicker({{.Variable}}.Name, x, tickerPrice, assetType)
+		//	}
+	//	}
+	//}
+	//return ticker.GetTicker({{.Variable}}.Name, p, assetType)
+  return tickerPrice, nil // NOTE DO NOT USE AS RETURN
+}
+
+// GetTickerPrice returns the ticker for a currency pair
+func ({{.Variable}} *{{.CapitalName}}) GetTickerPrice(p pair.CurrencyPair, assetType string) (ticker.Price, error) {
+	tickerNew, err := ticker.GetTicker({{.Variable}}.GetName(), p, assetType)
+	if err != nil {
+		return {{.Variable}}.UpdateTicker(p, assetType)
+	}
+	return tickerNew, nil
+}
+
+// GetOrderbookEx returns orderbook base on the currency pair
+func ({{.Variable}} *{{.CapitalName}}) GetOrderbookEx(currency pair.CurrencyPair, assetType string) (orderbook.Base, error) {
+	ob, err := orderbook.GetOrderbook({{.Variable}}.GetName(), currency, assetType)
+	if err != nil {
+		return {{.Variable}}.UpdateOrderbook(currency, assetType)
+	}
+	return ob, nil
+}
+
+// UpdateOrderbook updates and returns the orderbook for a currency pair
+func ({{.Variable}} *{{.CapitalName}}) UpdateOrderbook(p pair.CurrencyPair, assetType string) (orderbook.Base, error) {
+	var orderBook orderbook.Base
+  //NOTE UPDATE ORDERBOOK EXAMPLE
+	//orderbookNew, err := {{.Variable}}.GetOrderBook(exchange.FormatExchangeCurrency({{.Variable}}.Name, p).String(), 1000)
+	//if err != nil {
+	//	return orderBook, err
+	//}
+
+	//for _, bids := range orderbookNew.Bids {
+	//	orderBook.Bids = append(orderBook.Bids, orderbook.Item{Amount: bids.Quantity, Price: bids.Price})
+	//}
+
+	//for _, asks := range orderbookNew.Asks {
+	//	orderBook.Asks = append(orderBook.Asks, orderbook.Item{Amount: asks.Quantity, Price: asks.Price})
+	//}
+
+	//orderbook.ProcessOrderbook(b.GetName(), p, orderBook, assetType)
+	//return orderbook.GetOrderbook({{.Variable}}.Name, p, assetType)
+  return orderBook, nil // NOTE DO NOT USE AS RETURN
+}
+
+// GetAccountInfo retrieves balances for all enabled currencies for the
+// {{.CapitalName}} exchange
+func ({{.Variable}} *{{.CapitalName}}) GetAccountInfo() (exchange.AccountInfo, error) {
+	var response exchange.AccountInfo
+	return response, errors.New("not implemented")
+}
+
+// GetFundingHistory returns funding history, deposits and
+// withdrawals
+func ({{.Variable}} *{{.CapitalName}}) GetFundingHistory() ([]exchange.FundHistory, error) {
+	var fundHistory []exchange.FundHistory
+	return fundHistory, common.ErrFunctionNotSupported
+}
+
+// GetExchangeHistory returns historic trade data since exchange opening.
+func ({{.Variable}} *{{.CapitalName}}) GetExchangeHistory(p pair.CurrencyPair, assetType string) ([]exchange.TradeHistory, error) {
+	var resp []exchange.TradeHistory
+
+	return resp, common.ErrNotYetImplemented
+}
+
+// SubmitOrder submits a new order
+func ({{.Variable}} *{{.CapitalName}}) SubmitOrder(p pair.CurrencyPair, side exchange.OrderSide, orderType exchange.OrderType, amount, price float64, clientID string) (exchange.SubmitOrderResponse, error) {
+	return "", common.ErrNotYetImplemented
+}
+
+// ModifyOrder will allow of changing orderbook placement and limit to
+// market conversion
+func ({{.Variable}} *{{.CapitalName}}) ModifyOrder(orderID int64, action exchange.ModifyOrder) (int64, error) {
+	return 0, common.ErrNotYetImplemented
+}
+
+// CancelOrder cancels an order by its corresponding ID number
+func ({{.Variable}} *{{.CapitalName}}) CancelOrder(order exchange.OrderCancellation) error {
+	return common.ErrNotYetImplemented
+}
+
+// CancelAllOrders cancels all orders associated with a currency pair
+func ({{.Variable}} *{{.CapitalName}}) CancelAllOrders() error {
+	return common.ErrNotYetImplemented
+}
+
+// GetOrderInfo returns information on a current open order
+func ({{.Variable}} *{{.CapitalName}}) GetOrderInfo(orderID int64) (exchange.OrderDetail, error) {
+	var orderDetail exchange.OrderDetail
+	return orderDetail, common.ErrNotYetImplemented
+}
+
+// GetDepositAddress returns a deposit address for a specified currency
+func ({{.Variable}} *{{.CapitalName}}) GetDepositAddress(cryptocurrency pair.CurrencyItem) (string, error) {
+	return "", common.ErrNotYetImplemented
+}
+
+// WithdrawCryptocurrencyFunds returns a withdrawal ID when a withdrawal is
+// submitted
+func ({{.Variable}} *{{.CapitalName}}) WithdrawCryptocurrencyFunds(address string, cryptocurrency pair.CurrencyItem, amount float64) (string, error) {
+	return "", common.ErrNotYetImplemented
+}
+
+// WithdrawFiatFunds returns a withdrawal ID when a withdrawal is
+// submitted
+func ({{.Variable}} *{{.CapitalName}}) WithdrawFiatFunds(currency pair.CurrencyItem, amount float64) (string, error) {
+	return "", common.ErrNotYetImplemented
+}
+
+// WithdrawFiatFundsToInternationalBank returns a withdrawal ID when a withdrawal is
+// submitted
+func ({{.Variable}} *{{.CapitalName}}) WithdrawFiatFundsToInternationalBank(currency pair.CurrencyItem, amount float64) (string, error) {
+	return "", common.ErrNotYetImplemented
+}
+
+// GetWebsocket returns a pointer to the exchange websocket
+func ({{.Variable}} *{{.CapitalName}}) GetWebsocket() (*exchange.Websocket, error) {
+	return nil, common.ErrNotYetImplemented
+}
+
+{{end}}

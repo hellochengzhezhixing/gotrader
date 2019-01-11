@@ -48,15 +48,43 @@ func OrderHuobi(){
 	for _,account  := range hello {
 		fmt.Println(".....",account)
 
-		accountb,err := huobiex.GetAccountBalance(strconv.FormatInt(account.ID,10))
-		if err != nil {
-			fmt.Println("hello balance get errr...",err)
-		}
-		for _,accountbalance := range accountb{
-			if accountbalance.Currency == "eth"{
-				fmt.Println("....current account id : ",account.ID," balance : ",accountbalance)
+		//现货
+		if account.Type == "spot"{
+			//挂单尝试
+			arg := huobi.SpotNewOrderRequestParams{
+				Symbol:    "eoseth",
+				AccountID: int(account.ID),
+				Amount:    0.1,
+				Price:     0.001,
+				Type:      huobi.SpotNewOrderRequestTypeBuyLimit,
+			}
+			buyorderid,err := huobiex.SpotNewOrder(arg)
+			if err != nil {
+				fmt.Println("failed to place an order....",err)
+			}
+			fmt.Println("succeed in placing a new buy order......",buyorderid)
+			
+			accountb,err := huobiex.GetAccountBalance(strconv.FormatInt(account.ID,10))
+			if err != nil {
+				fmt.Println("hello balance get errr...",err)
+			}
+			for _,accountbalance := range accountb{
+				if accountbalance.Currency == "eth"{
+					fmt.Println("....current account id : ",account.ID," balance : ",accountbalance)
+					
+				}
 			}
 		}
 
 	}
+
+	// huobiex.
+
 }
+
+
+//PlaceOrder need to input the account id
+// func PlaceOrder(){
+
+
+// }

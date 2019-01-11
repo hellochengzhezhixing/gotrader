@@ -6,6 +6,7 @@ import(
 	// exchange "github.com/thrasher-/gocryptotrader/exchanges"
 	"github.com/thrasher-/gocryptotrader/exchanges/huobi"
 	"github.com/thrasher-/gocryptotrader/config"
+	"strconv"
 )
 
 //OrderHuobi is ?
@@ -33,7 +34,6 @@ func OrderHuobi(){
 		}
 	}
 	
-
 	// huo := new(exchange.IBotExchange)
 	// fmt.Println("i am bot ??",huo)
 
@@ -47,5 +47,14 @@ func OrderHuobi(){
 	}
 	for _,account  := range hello {
 		fmt.Println(".....",account)
+
+		accountb,err := huobiex.GetAccountBalance(strconv.FormatInt(account.ID,10))
+		if err != nil {
+			fmt.Println("hello balance get errr...",err)
+		}
+		for _,accountbalance := range accountb{
+			fmt.Println("....current account id : ",account.ID," balance : ",accountbalance)
+		}
+
 	}
 }

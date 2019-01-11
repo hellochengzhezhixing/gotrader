@@ -63,6 +63,11 @@ func OrderHuobi(){
 				fmt.Println("failed to place an order....",err)
 			}
 			fmt.Println("succeed in placing a new buy order......",buyorderid)
+			cancelorder,err := huobiex.CancelExistingOrder(buyorderid)
+			if err != nil {
+				fmt.Println("failed to cancel the existing order")
+			}
+			fmt.Println("cancelorder successful...",cancelorder)
 			
 			accountb,err := huobiex.GetAccountBalance(strconv.FormatInt(account.ID,10))
 			if err != nil {

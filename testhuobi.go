@@ -53,7 +53,9 @@ func OrderHuobi(){
 			fmt.Println("hello balance get errr...",err)
 		}
 		for _,accountbalance := range accountb{
-			fmt.Println("....current account id : ",account.ID," balance : ",accountbalance)
+			if accountbalance.Currency == "eth"{
+				fmt.Println("....current account id : ",account.ID," balance : ",accountbalance)
+			}
 		}
 
 	}

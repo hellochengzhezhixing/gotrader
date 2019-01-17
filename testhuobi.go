@@ -8,7 +8,6 @@ import(
 	"github.com/thrasher-/gocryptotrader/config"
 	"strconv"
 )
-
 //OrderHuobi is ?
 func OrderHuobi(){
 
@@ -83,13 +82,15 @@ func OrderHuobi(){
 
 	}
 
+
+	wsclient := NewWebsocketHub()
+	wsclient.run()
+
 	// huobiex.
 
 }
 
-
-//PlaceOrder need to input the account id
-// func PlaceOrder(){
-
+// //strategy...
+// func Strategy(){
 
 // }

@@ -7,6 +7,9 @@ import(
 	"github.com/thrasher-/gocryptotrader/exchanges/huobi"
 	"github.com/thrasher-/gocryptotrader/config"
 	"strconv"
+
+	"github.com/gorilla/websocket"
+	"time"
 )
 //OrderHuobi is ?
 func OrderHuobi(){
@@ -84,13 +87,45 @@ func OrderHuobi(){
 
 
 	wsclient := NewWebsocketHub()
-	wsclient.run()
 
 	// huobiex.
 
 }
 
-// //strategy...
-// func Strategy(){
+//strategy function for update...
+func Strategy(){
+	if !wsHubStarted {
+		StartWebsocketHandler()
+	}
 
-// }
+	connectionLimit := bot.config.Webserver.WebsocketConnectionLimit
+	numClients := len(wsHub.Clients)
+
+	if numClients >= connectionLimit {
+		log.Printf("websocket: client rejected due to websocket client limit reached. Number of clients %d. Limit %d.",
+			numClients, connectionLimit)
+		return
+	}
+
+	// upgrader := websocket.Upgrader{
+	// 	WriteBufferSize: 1024,
+	// 	ReadBufferSize:  1024,
+	// }
+
+	// conn, err := upgrader.Upgrade(w, r, nil)
+	// if err != nil {
+	// 	log.Println(err)
+	// 	return
+	// }
+	
+	conn := websocket.Conn{}
+	client := &WebsocketClient{Hub: wsHub, Conn: &conn, Send: make(chan []byte, 1024)}
+	client.Hub.Register <- client
+	log.Printf("websocket: client connected. Connected clients: %d. Limit %d.",
+		numClients+1, connectionLimit)
+
+	for {
+		client.read()
+		time.Sleep(1 * time.Second)
+	}
+}

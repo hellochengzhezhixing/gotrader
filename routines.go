@@ -3,7 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
-	"log"
+	 "log"
 	"sync"
 	"time"
 
@@ -16,6 +16,8 @@ import (
 	"github.com/thrasher-/gocryptotrader/exchanges/stats"
 	"github.com/thrasher-/gocryptotrader/exchanges/ticker"
 )
+
+// log.SetFlags(log.LstdFlags | log.Lshortfile)
 
 func printCurrencyFormat(price float64) string {
 	displaySymbol, err := symbol.GetSymbolByCurrencyName(bot.config.Currency.FiatDisplayCurrency)
@@ -179,6 +181,7 @@ func relayWebsocketEvent(result interface{}, event, assetType, exchangeName stri
 // TickerUpdaterRoutine fetches and updates the ticker for all enabled
 // currency pairs and exchanges
 func TickerUpdaterRoutine() {
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	log.Println("Starting ticker updater routine.")
 	var wg sync.WaitGroup
 	for {

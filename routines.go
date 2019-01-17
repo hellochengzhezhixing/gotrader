@@ -239,6 +239,8 @@ func TickerUpdaterRoutine() {
 // OrderbookUpdaterRoutine fetches and updates the orderbooks for all enabled
 // currency pairs and exchanges
 func OrderbookUpdaterRoutine() {
+	// to change the flags on the default logger
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	log.Println("Starting orderbook updater routine.")
 	var wg sync.WaitGroup
 	for {

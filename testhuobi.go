@@ -87,6 +87,7 @@ func OrderHuobi(){
 
 
 	// wsclient := NewWebsocketHub()
+	Strategy()
 
 	// huobiex.
 

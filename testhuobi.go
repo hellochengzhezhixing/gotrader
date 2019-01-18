@@ -6,11 +6,17 @@ import(
 	// exchange "github.com/thrasher-/gocryptotrader/exchanges"
 	"github.com/thrasher-/gocryptotrader/exchanges/huobi"
 	"github.com/thrasher-/gocryptotrader/config"
+	// "github.com/thrasher-/gocryptotrader/exchanges/orderbook"
 	"strconv"
 
-	"github.com/gorilla/websocket"
-	"time"
+	// "github.com/gorilla/websocket"
+	// "time"
+	"github.com/thrasher-/gocryptotrader/communications/base"
 )
+
+//global orderbook
+// var Listbook orderbook.Base
+
 //OrderHuobi is ?
 func OrderHuobi(){
 
@@ -87,8 +93,8 @@ func OrderHuobi(){
 
 
 	// wsclient := NewWebsocketHub()
-	Strategy()
-
+	// Strategy()
+	log.Println("..........",base.OrderbookStaged)	
 	// huobiex.
 
 }
@@ -119,14 +125,14 @@ func Strategy(){
 	// 	return
 	// }
 	
-	conn := websocket.Conn{}
-	client := &WebsocketClient{Hub: wsHub, Conn: &conn, Send: make(chan []byte, 1024)}
-	client.Hub.Register <- client
-	log.Printf("websocket: client connected. Connected clients: %d. Limit %d.",
-		numClients+1, connectionLimit)
+	// conn := websocket.Conn{}
+	// client := &WebsocketClient{Hub: wsHub, Conn: &conn, Send: make(chan []byte, 1024)}
+	// client.Hub.Register <- client
+	// log.Printf("websocket: client connected. Connected clients: %d. Limit %d.",
+	// 	numClients+1, connectionLimit)
 
-	for {
-		client.read()
-		time.Sleep(1 * time.Second)
-	}
+	// for {
+	// 	client.read()
+	// 	time.Sleep(1 * time.Second)
+	// }
 }
